@@ -35,7 +35,7 @@ for dirpath, filenames in read_dir_files:
             all_fastq_files.append(os.path.join (dirpath, filename))
 
 #list of unique samples
-fastq_basenames = [os.path.basenames(x).split('.')[0] for x in all_fastq_files]
+fastq_basenames = [os.path.basename(x).split('.')[0] for x in all_fastq_files]
 
 all_samples = list(set(re.sub('^MA-(?P<id>\w+)_\d+$', '\g<id>', x)
     for x in fastq_basenames)) 

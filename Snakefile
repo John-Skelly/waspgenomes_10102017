@@ -67,15 +67,15 @@ rule trim_decon:
         10
     shell:
         'bin/bbmap/bbduk.sh '
-        'threads={threads}'
+        'threads={threads} '
         'in={input.r1} '
         'in2={input.r2} '
         'out=stdout.fastq '
         'ref=bin/bbmap/resources/phix174_ill.ref.fa.gz '
-        'hdist=1'
-        'stats={output.f_stats}        
+        'hdist=1 '
+        'stats={output.f_stats} '       
         '2> {log.filter}'
-        '|'
+        ' | '
         'bin/bbmap/bbduk.sh '
         'threads={threads} '
         'in=stdin.fastq '

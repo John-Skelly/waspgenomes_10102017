@@ -103,6 +103,6 @@ rule merge:
         'threads={threads} '
         'in={input.r1} '
         'verystrict=t '
-        'out= {output.fq_merged} '
-        'outu= {output.fq_unmerged} '
+        'out={output.fq_merged} '
+        'outu={output.fq_unmerged} '
         '2> {log.merge} '

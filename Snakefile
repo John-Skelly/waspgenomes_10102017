@@ -91,9 +91,10 @@ rule trim_decon:
 rule merge:
     input:
         r1 = 'output/trim_decon/Ma-{strain}.fastq.gz'
-    output
-        fq_merged = 'output/merge/Ma-{strain}_merged.fastq.gz'
-        fq_unmerged = 'output/merge/Ma-{strain}_unmerged.fastq.gz'
+    output:
+        fq_merged = 'output/merge/Ma-{strain}_merged.fastq.gz',
+        fq_unmerged = 'output/merge/Ma-{strain}_unmerged.fastq.gz',
+        ihist = 'output/merge/Ma-{strain}_hist.txt'
     log:
         merge = 'output/merge/Ma-{strain}_merged.log'
     threads:
@@ -105,4 +106,5 @@ rule merge:
         'verystrict=t '
         'out={output.fq_merged} '
         'outu={output.fq_unmerged} '
+        'ihist={output.ihist} '
         '2> {log.merge} '

@@ -47,7 +47,7 @@ all_samples = list(set(re.sub('^Ma-(?P<id>\w+)_\d+$', '\g<id>', x)
 #target
 rule all:
     input:
-        expand('output/trim_decon/Ma-{strain}.fastq.gz',
+        expand('output/merge/Ma-{strain}_merged.fastq.gz',
             strain=all_samples)
 
 #trim & decontaminate read files

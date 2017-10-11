@@ -86,4 +86,23 @@ rule trim_decon:
         'stats={output.t_stats} '
         '2> {log.trim} '
 
+# merge overlaping reads
 
+rule merge:
+    input:
+        r1 = 'output/trim_decon/Ma-{strain}.fastq.gz'
+    output
+        fq_merged = 'output/merge/Ma-{strain}_merged.fastq.gz'
+        fq_unmerged = 'output/merge/Ma-{strain}_unmerged.fastq.gz'
+    log:
+        merge = 'output/merge/Ma-{strain}_merged.log'
+    threads:
+        10
+    shell:
+        'bin/bbmap/bbmerge.sh '
+        'threads={threads} '
+        'in={input.r1} '
+        'verystrict=t '
+        'out= {output.fq_merged} '
+        'outu= {output.fq_unmerged} '
+        '2> {log.merge} '

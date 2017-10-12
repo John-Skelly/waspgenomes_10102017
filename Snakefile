@@ -117,17 +117,22 @@ rule norm:
     output:
         fq_norm = 'output/norm/Ma-{strain}_norm.fastq.gz',
         fq_toss = 'output/norm/Ma-{strain}_toss.fastq.gz',
-        khist = 'output/norm/Ma-{strain}_khist.txt'
+        hist = 'output/norm/Ma-{strain}_hist.txt',
+        hist_out = 'output/norm/Ma-{strain}_hist_out.txt'
     log:
         norm = 'output/norm/Ma-{strain}_norm.log'
     threads:
-        10
+        50
     shell:
         'bin/bbmap/bbnorm.sh '
         'in={input.r1} '
+        'threads={threads} '
         'out={output.fq_norm} '
         'outt={output.fq_toss} '
-        'khist={output.khist} '
+        'hist={output.hist} '
+        'histout={output.hist_out} '
+        'target=50 '
+        'min=5 '
         '2> {log.norm} '
         
             

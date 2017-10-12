@@ -47,7 +47,7 @@ all_samples = list(set(re.sub('^Ma-(?P<id>\w+)_\d+$', '\g<id>', x)
 #target
 rule all:
     input:
-        expand('output/merge/Ma-{strain}_merged.fastq.gz',
+        expand('output/norm/Ma-{strain}_norm.fastq.gz',
             strain=all_samples)
 
 #trim & decontaminate read files
@@ -108,3 +108,27 @@ rule merge:
         'outu={output.fq_unmerged} '
         'ihist={output.ihist} '
         '2> {log.merge} '
+
+# normalise
+
+rule norm:
+    input:
+        r1 = 'output/trim_decon/Ma-{strain}.fastq.gz'
+    output:
+        fq_norm = 'output/norm/Ma-{strain}_norm.fastq.gz',
+        fq_toss = 'output/norm/Ma-{strain}_toss.fastq.gz',
+        khist = 'output/norm/Ma-{strain}_khist.txt'
+    log:
+        norm = 'output/norm/Ma-{strain}_norm.log'
+    threads:
+        10
+    shell:
+        'bin/bbmap/bbnorm.sh '
+        'in={input.r1} '
+        'out={output.fq_norm} '
+        'outt={output.fq_toss} '
+        'khist={output.khist} '
+        '2> {log.norm} '
+        
+            
+            

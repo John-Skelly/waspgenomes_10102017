@@ -3,7 +3,7 @@
 
 import os
 import re
-
+import pathlib
 
 #########
 #GLOBALS#
@@ -16,6 +16,9 @@ meraculous_config_file = 'src/meraculous_config.txt'
 #Functions#
 ###########
 
+def resolve_path(x):
+    mypath=pathlib.Path(x).resolve()
+    return str(mypath)
 
 #########
 #Setup###
@@ -157,8 +160,9 @@ rule meraculous:
     log:
         'output/meraculous/{strain}/{read_set}/meraculous.log'
     run:
+        my_fastq = resolve_path(input.fastq)
         my_conf = meraculous_config_string.format(
-            input.fastq, params.k, threads)
+            my_fastq, params.k, threads)
         with open(output.config, 'wt') as f:
             f.write(my_conf)
         shell(

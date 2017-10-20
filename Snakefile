@@ -10,7 +10,7 @@ import re
 #########
 
 read_dir = 'data/reads'
-
+meraculous_config_file = 'src/meraculous_config.txt'
 
 ###########
 #Functions#
@@ -40,6 +40,10 @@ fastq_basenames = [os.path.basename(x).split('.')[0] for x in all_fastq_files]
 all_samples = list(set(re.sub('^Ma-(?P<id>\w+)_\d+$', '\g<id>', x)
     for x in fastq_basenames)) 
 
+# read the meraculous config
+with open(meraculous_config_file, 'rt') as f:
+    meraculous_config_string = ''.join(f.readlines())
+
 #########
 #Rules###
 #########
@@ -47,11 +51,12 @@ all_samples = list(set(re.sub('^Ma-(?P<id>\w+)_\d+$', '\g<id>', x)
 #target
 rule all:
     input:
-        expand('output/norm/Ma-{strain}_norm.fastq.gz',
-            strain=all_samples)
+        expand('output/norm/Ma-{strain}.fastq.gz',
+            strain=all_samples),
+        expand('output/meraculous/{strain}/{read_set}/contigs.fa',
+               strain=all_samples, read_set=['norm', 'trim_decon'])
 
 #trim & decontaminate read files
-
 rule trim_decon:
     input:
         r1 = 'data/reads/Ma-{strain}_1.fastq.gz',
@@ -115,7 +120,7 @@ rule norm:
     input:
         r1 = 'output/trim_decon/Ma-{strain}.fastq.gz'
     output:
-        fq_norm = 'output/norm/Ma-{strain}_norm.fastq.gz',
+        fq_norm = 'output/norm/Ma-{strain}.fastq.gz',
         fq_toss = 'output/norm/Ma-{strain}_toss.fastq.gz',
         hist = 'output/norm/Ma-{strain}_hist.txt',
         hist_out = 'output/norm/Ma-{strain}_hist_out.txt'
@@ -135,5 +140,16 @@ rule norm:
         'min=5 '
         '2> {log.norm} '
         
-            
-            
+# run meraculous
+rule meraculous:
+    input:
+        fastq = 'output/{read_set}/Ma-{strain}.fastq.gz'
+    threads:
+        50
+    params:
+        k = 71
+    output:
+        config = 'output/meraculous/{strain}/{read_set}/config.txt',
+        contigs = 'output/meraculous/{strain}/{read_set}/contigs.fa'
+    run:
+        print meraculous_config_string.format('z')

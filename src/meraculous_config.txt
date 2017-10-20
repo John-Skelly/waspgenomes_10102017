@@ -1,0 +1,9 @@
+lib_seq             {input.fastq} PE 670  100  250 0 0 1 1 1 0 0 
+genome_size         0.2
+mer_size            {params.k}
+diploid_mode        1
+min_depth_cutoff    0
+local_num_procs     {threads}
+local_max_memory    8
+use_cluster         0
+no_read_validation  0

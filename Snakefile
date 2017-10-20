@@ -71,7 +71,8 @@ rule trim_decon:
         t_stats = 'output/trim_decon/Ma-{strain}_trim-stats.txt'
     log:
         filter = 'output/trim_decon/Ma-{strain}_filter.log',  
-        trim = 'output/trim_decon/Ma-{strain}_trim.log'
+        trim = 'output/trim_decon/Ma-{strain}_trim.log',
+        repair = 'output/trim_decon/Ma-{strain}_repair.log'
     threads:
         10
     shell:
@@ -88,12 +89,18 @@ rule trim_decon:
         'bin/bbmap/bbduk.sh '
         'threads={threads} '
         'in=stdin.fastq '
-        'out={output.fq} '
+        'out=stdout.fastq '
         'ref=bin/bbmap/resources/adapters.fa '
         'ktrim=r k=23 mink=11 hdist=1 tpe tbo '
         'forcetrimmod=5 '
         'stats={output.t_stats} '
         '2> {log.trim} '
+        '| '
+        'bin/bbmap/repair.sh '
+        'in=stdin.fastq ' 
+        'out={output.fq} '
+        '2> {log.repair} '
+        
 
 # merge overlaping reads
 

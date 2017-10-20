@@ -52,8 +52,9 @@ with open(meraculous_config_file, 'rt') as f:
 rule all:
     input:
         expand('output/norm/Ma-{strain}.fastq.gz',
-            strain=all_samples),
-        expand('output/meraculous/{strain}/{read_set}/contigs.fa',
+               strain=all_samples),
+        expand(('output/meraculous/{strain}/{read_set}/'
+                'meraculous_final_results/final.scaffolds.fa'),
                strain=all_samples, read_set=['norm', 'trim_decon'])
 
 #trim & decontaminate read files
@@ -147,9 +148,23 @@ rule meraculous:
     threads:
         50
     params:
-        k = 71
+        k = 71,
+        outdir = 'output/meraculous/{strain}/{read_set}'
     output:
         config = 'output/meraculous/{strain}/{read_set}/config.txt',
-        contigs = 'output/meraculous/{strain}/{read_set}/contigs.fa'
+        contigs = ('output/meraculous/{strain}/{read_set}/'
+                   'meraculous_final_results/final.scaffolds.fa')
+    log:
+        'output/meraculous/{strain}/{read_set}/meraculous.log'
     run:
-        print meraculous_config_string.format('z')
+        my_conf = meraculous_config_string.format(
+            input.fastq, params.k, threads)
+        with open(output.config, 'wt') as f:
+            f.write(my_conf)
+        shell(
+            'echo "'
+            'bin/meraculous/run_meraculous.sh '
+            '-dir {params.outdir} '
+            '-config {output.config} '
+            '&> {log}'
+            '"')

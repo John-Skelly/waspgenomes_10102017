@@ -162,9 +162,7 @@ rule meraculous:
         with open(output.config, 'wt') as f:
             f.write(my_conf)
         shell(
-            'echo "'
             'bin/meraculous/run_meraculous.sh '
             '-dir {params.outdir} '
             '-config {output.config} '
-            '&> {log}'
-            '"')
+            '&> {log}')

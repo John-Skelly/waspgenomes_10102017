@@ -7,3 +7,5 @@ local_num_procs     {2}
 local_max_memory    8
 use_cluster         0
 no_read_validation  0
+num_prefix_blocks   1
+

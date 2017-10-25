@@ -11,6 +11,9 @@ import pathlib
 
 read_dir = 'data/reads'
 meraculous_config_file = 'src/meraculous_config.txt'
+read_set = ['norm', 'trim_decon']
+k = ['31', '71', '151']
+diploid_mode = ['0', '1']
 
 ###########
 #Functions#
@@ -54,11 +57,9 @@ with open(meraculous_config_file, 'rt') as f:
 #target
 rule all:
     input:
-        expand('output/norm/Ma-{strain}.fastq.gz',
-               strain=all_samples),
-        expand(('output/meraculous/{strain}/{read_set}/'
+        expand(('output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
                 'meraculous_final_results/final.scaffolds.fa'),
-               strain=all_samples, read_set=['norm', 'trim_decon'])
+               strain=all_samples, read_set=read_set, k=k, diploid_mode=diploid_mode)
 
 #trim & decontaminate read files
 rule trim_decon:
@@ -134,7 +135,8 @@ rule norm:
         fq_norm = 'output/norm/Ma-{strain}.fastq.gz',
         fq_toss = 'output/norm/Ma-{strain}_toss.fastq.gz',
         hist = 'output/norm/Ma-{strain}_hist.txt',
-        hist_out = 'output/norm/Ma-{strain}_hist_out.txt'
+        hist_out = 'output/norm/Ma-{strain}_hist_out.txt',
+        peaks = 'output/norm/Ma-{strain}_peaks.txt'
     log:
         norm = 'output/norm/Ma-{strain}_norm.log'
     threads:
@@ -149,6 +151,7 @@ rule norm:
         'histout={output.hist_out} '
         'target=50 '
         'min=5 '
+        'peaks={output.peaks} '
         '2> {log.norm} '
         
 # run meraculous
@@ -158,18 +161,18 @@ rule meraculous:
     threads:
         50
     params:
-        k = 71,
-        outdir = 'output/meraculous/{strain}/{read_set}'
+        outdir = 'output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
     output:
-        config = 'output/meraculous/{strain}/{read_set}/config.txt',
-        contigs = ('output/meraculous/{strain}/{read_set}/'
-                   'meraculous_final_results/final.scaffolds.fa')
+        config = ('output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
+                'config.txt'),
+        contigs = ('output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
+                'meraculous_final_results/final.scaffolds.fa')
     log:
         'output/meraculous/{strain}/{read_set}/meraculous.log'
     run:
         my_fastq = resolve_path(input.fastq)
         my_conf = meraculous_config_string.format(
-            my_fastq, params.k, threads)
+            my_fastq, wildcards.k, wildcards.diploid_mode, threads)
         with open(output.config, 'wt') as f:
             f.write(my_conf)
         shell(

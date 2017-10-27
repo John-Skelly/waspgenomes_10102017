@@ -12,7 +12,7 @@ import pathlib
 read_dir = 'data/reads'
 meraculous_config_file = 'src/meraculous_config.txt'
 read_set = ['norm', 'trim_decon']
-k = ['31', '71', '151']
+k = ['31', '71', '127']
 diploid_mode = ['0', '1']
 
 ###########
@@ -173,11 +173,11 @@ rule meraculous:
         my_fastq = resolve_path(input.fastq)
         if wildcards.strain == 'MA3':
             if wildcards.k == '31':
-                my_dmin = '22'
+                my_dmin = '46'
             elif wildcards.k == '71':
                 my_dmin = '38'
-            elif wildcards.k == '151':
-                my_dmin = '71'
+            elif wildcards.k == '127':
+                my_dmin = '26'
             else:
                 raise ValueError('kmer not matched or whatever it does not really matter')
             if wildcards.read_set == 'norm':
@@ -185,7 +185,7 @@ rule meraculous:
         else:
             my_dmin = '0'
         my_conf = meraculous_config_string.format(
-            my_fastq, wildcards.k, my_dmin, wildcards.diploid_mode, threads)
+            my_fastq, wildcards.k, wildcards.diploid_mode, my_dmin, threads)
         with open(output.config, 'wt') as f:
             f.write(my_conf)
         shell(

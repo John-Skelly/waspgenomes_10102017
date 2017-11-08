@@ -23,7 +23,7 @@ def resolve_path(x):
     mypath=pathlib.Path(x).resolve()
     return str(mypath)
 
-def find_completed_assemblies():
+def find_completed_assemblies(wildcards):
     my_files = list((dirpath, filenames)
                     for (dirpath, dirnames, filenames) 
                     in os.walk('output/meraculous'))

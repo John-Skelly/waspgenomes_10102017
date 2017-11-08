@@ -219,5 +219,6 @@ rule assembly_stats:
               'in={my_inputfiles} '
               'minscaf=1000 '
               'format=2 '
-              '>{output} '
+              '>{output} ')
+
         

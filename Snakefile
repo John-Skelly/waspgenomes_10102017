@@ -23,6 +23,19 @@ def resolve_path(x):
     mypath=pathlib.Path(x).resolve()
     return str(mypath)
 
+def find_completed_assemblies():
+    my_files = list((dirpath, filenames)
+                    for (dirpath, dirnames, filenames) 
+                    in os.walk('output/meraculous'))
+    my_fasta_files = []
+    for dirpath, filenames in my_files:
+        for filename in filenames:
+            if ('final.scaffolds.fa' in filename 
+                    and 'meraculous_final_results' in dirpath):
+                my_path=os.path.join(dirpath, filename)
+                my_fasta_files.append(resolve_path(my_path))
+    return(my_fasta_files)
+
 #########
 #Setup###
 #########
@@ -193,3 +206,18 @@ rule meraculous:
             '-dir {params.outdir} '
             '-config {output.config} '
             '&> {log}')
+
+#assembly stats
+rule assembly_stats:
+    input:
+        fa = find_completed_assemblies
+    output:
+        'output/assembly_stats/stats.txt'
+    run:
+        my_inputfiles = ','.join(input.fa)
+        shell('bin/bbmap/statswrapper.sh '
+              'in={my_inputfiles} '
+              'minscaf=1000 '
+              'format=2 '
+              '>{output} '
+        

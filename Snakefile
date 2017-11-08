@@ -218,7 +218,7 @@ rule assembly_stats:
         shell('bin/bbmap/statswrapper.sh '
               'in={my_inputfiles} '
               'minscaf=1000 '
-              'format=2 '
+              'format=3 '
               '>{output} ')
 
         

@@ -5,16 +5,6 @@ import os
 import re
 import pathlib
 
-#########
-#GLOBALS#
-#########
-
-read_dir = 'data/reads'
-meraculous_config_file = 'src/meraculous_config.txt'
-read_set = ['norm', 'trim_decon']
-k = ['31', '71', '127']
-diploid_mode = ['0', '1']
-
 ###########
 #Functions#
 ###########
@@ -35,6 +25,27 @@ def find_completed_assemblies(wildcards):
                 my_path=os.path.join(dirpath, filename)
                 my_fasta_files.append(resolve_path(my_path))
     return(my_fasta_files)
+
+def parse_fasta_path(fasta_path):
+    stripped_path = re.sub('^.+/output/meraculous/(?P<id>.+)/meraculous_.+$', '\g<id>', fasta_path)
+    path_elements = stripped_path.split('/')
+    return {'fasta': fasta_path, 
+            'strain': path_elements[0], 
+            'read_set': path_elements[1],
+            'k': path_elements[2],
+            'diploid_mode': path_elements[3]}
+    
+#########
+#GLOBALS#
+#########
+
+read_dir = 'data/reads'
+meraculous_config_file = 'src/meraculous_config.txt'
+read_set = ['norm', 'trim_decon']
+k = ['31', '71', '127']
+diploid_mode = ['0', '1']
+augustus_config_dir = resolve_path('bin/augustus/config')
+hymenoptera_odb = resolve_path('data/hymenoptera_odb9')
 
 #########
 #Setup###
@@ -63,6 +74,12 @@ all_samples = list(set(re.sub('^Ma-(?P<id>\w+)_\d+$', '\g<id>', x)
 with open(meraculous_config_file, 'rt') as f:
     meraculous_config_string = ''.join(f.readlines())
 
+# generate a list of Busco targets
+completed_assemblies = [parse_fasta_path(x) for x in find_completed_assemblies('')]
+busco_targets = [('output/busco/'
+                  '{strain}/{read_set}/{k}/{diploid_mode}/'
+                  'run_busco/full_table_test.tsv').format(**x) 
+                 for x in completed_assemblies]
 #########
 #Rules###
 #########
@@ -221,4 +238,29 @@ rule assembly_stats:
               'format=3 '
               '>{output} ')
 
-        
+#busco analysis
+rule busco_targets:
+    input: busco_targets
+
+rule busco:
+    input:
+        fasta = ('output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
+                 'meraculous_final_results/final.scaffolds.fa')
+    output:
+        tsv = ('output/busco/'
+               '{strain}/{read_set}/{k}/{diploid_mode}/'
+               'run_busco/full_table_test.tsv')
+    params:
+        wd = 'output/busco/{strain}/{read_set}/{k}/{diploid_mode}/'
+    threads: 10
+    run:
+        my_fasta = resolve_path(input.fasta)
+        shell('cd {params.wd} || exit 1 ; '
+              'export AUGUSTUS_CONFIG_PATH={augustus_config_dir} ; '
+              'run_BUSCO.py '
+              '-i {my_fasta} '
+              '-c {threads} '
+              '-o busco '
+              '-m geno '
+              '-l {hymenoptera_odb} '
+              '&> busco.log')

@@ -90,10 +90,6 @@ rule all:
         expand(('output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
                 'meraculous_final_results/final.scaffolds.fa'),
                strain=all_samples, read_set=read_set, k=k, diploid_mode=diploid_mode)
-        expand(('output/busco/'
-               '{strain}/{read_set}/{k}/{diploid_mode}/'
-               'run_busco/full_table_test.tsv'), 
-               strain=all_samples, read_set=read_set, k=k, diploid_mode=diploid_mode)
 
 #trim & decontaminate read files
 rule trim_decon:

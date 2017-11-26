@@ -263,4 +263,5 @@ rule busco:
               '-o busco '
               '-m geno '
               '-l {hymenoptera_odb} '
+              '-f '                                                             #force
               '&> busco.log')

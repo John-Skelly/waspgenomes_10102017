@@ -189,7 +189,7 @@ rule meraculous:
     input:
         fastq = 'output/{read_set}/Ma-{strain}.fastq.gz'
     threads:
-        50ls
+        50
     params:
         outdir = 'output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
     output:

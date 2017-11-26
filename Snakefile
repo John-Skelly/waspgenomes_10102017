@@ -244,7 +244,7 @@ rule busco_targets:
 
 rule busco:
     input:
-        fasta = ('output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
+        fasta = ('output/meraculous/{strain}/{read_set}/{k}/{diploid_mode}/'
                  'meraculous_final_results/final.scaffolds.fa')
     output:
         tsv = ('output/busco/'

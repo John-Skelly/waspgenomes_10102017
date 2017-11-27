@@ -78,7 +78,7 @@ with open(meraculous_config_file, 'rt') as f:
 completed_assemblies = [parse_fasta_path(x) for x in find_completed_assemblies('')]
 busco_targets = [('output/busco/'
                   '{strain}/{read_set}/{k}/{diploid_mode}/'
-                  'run_busco/full_table_test.tsv').format(**x) 
+                  'run_busco/full_table_busco.tsv').format(**x) 
                  for x in completed_assemblies]
 #########
 #Rules###

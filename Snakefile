@@ -272,4 +272,4 @@ rule combine_busco_results:
     input: busco_targets
     output: 'output/busco/full_table_combine.Rds'
     script:
-        'src/
+        'src/ '

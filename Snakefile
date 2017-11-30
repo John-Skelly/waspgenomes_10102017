@@ -263,5 +263,6 @@ rule busco:
               '-o busco '
               '-m geno '
               '-l {hymenoptera_odb} '
+              '-s nasonia '
               '-f '                                                             #force
               '&> busco.log')

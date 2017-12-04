@@ -13,23 +13,9 @@ ReadBuscoResults <- function(filepath){
                          na.strings = c(""))
 }
 
-#Globals
+output_rds <- snakemake@output[["rds"]]
 
-busco_result_files <- list("output/busco/IE/norm/k_127/diplo_0/run_busco/full_table_busco.tsv",
-"output/busco/IE/norm/k_31/diplo_0/run_busco/full_table_busco.tsv",
-"output/busco/IE/norm/k_71/diplo_0/run_busco/full_table_busco.tsv",
-"output/busco/IE/norm/k_71/diplo_1/run_busco/full_table_busco.tsv",
-"output/busco/IE/trim_decon/k_127/diplo_0/run_busco/full_table_busco.tsv",
-"output/busco/IE/trim_decon/k_31/diplo_0/run_busco/full_table_busco.tsv",
-"output/busco/IE/trim_decon/k_31/diplo_1/run_busco/full_table_busco.tsv",
-"output/busco/IE/trim_decon/k_71/diplo_0/run_busco/full_table_busco.tsv",
-"output/busco/MA3/norm/k_71/diplo_0/run_busco/full_table_busco.tsv",
-"output/busco/MA3/trim_decon/k_71/diplo_0/run_busco/full_table_busco.tsv",
-"output/busco/FR1/norm/k_31/diplo_1/run_busco/full_table_busco.tsv",
-"output/busco/FR1/norm/k_71/diplo_0/run_busco/full_table_busco.tsv",
-"output/busco/FR1/norm/k_71/diplo_1/run_busco/full_table_busco.tsv",
-"output/busco/FR1/trim_decon/k_31/diplo_0/run_busco/full_table_busco.tsv",
-"output/busco/FR1/trim_decon/k_31/diplo_1/run_busco/full_table_busco.tsv")
+output_plot <- snakemake@output[["plot"]]
 
 busco_result_files <- snakemake@input[["busco_targets"]]
 
@@ -56,7 +42,10 @@ busco_stats[,k:=factor(k,levels=c("k_31", "k_71", "k_127")) ]
 
 #plot
 
-ggplot(busco_stats,aes(x=k, y=percent_complete, fill=Status))+
+gp <- ggplot(busco_stats,aes(x=k, y=percent_complete, fill=Status))+
   geom_col(position = "dodge")+
   facet_grid(read_set+diploid_mode~strain)
-  
+
+saveRDS(busco_stats, file = output_rds)
+
+ggsave(filename = output_plot,plot = gp, width = 10, height = 7.5, units = 'in')

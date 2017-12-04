@@ -270,6 +270,8 @@ rule busco:
 #Combine busco results
 rule combine_busco_results:
     input: busco_targets = busco_targets
-    output: 'output/busco/full_table_combine.Rds'
+    output: 
+        rds = 'output/busco/full_table_combine.Rds',
+        plot = 'output/busco/stats_plot.pdf'
     script:
         'src/combine_busco_results.R'

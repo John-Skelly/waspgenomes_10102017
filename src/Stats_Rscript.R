@@ -1,7 +1,3 @@
-install.packages("data.table")
-install.packages("ggplot2")
-install.packages("bit64")
-
 library(data.table)
 library(ggplot2)
 library(bit64)
@@ -12,15 +8,23 @@ stats[ ,assembly_ID:= gsub(".*/meraculous/(.+)/meraculous_gap_closure.*", "\\1",
 
 stats[ , c("strain", "read_set", "k", "diploid_mode") := tstrsplit(assembly_ID, "/")]
 
-plot_data_all <- melt(stats,id.vars = c("strain", "read_set", "k", "diploid_mode") , measure.vars = c("n_scaffolds", "scaf_bp", "scaf_N50"))
+setkey(stats, strain, read_set, k, diploid_mode)
 
-plot_data_n <- melt(stats,id.vars = c("strain", "read_set", "k", "diploid_mode") , measure.vars = c("n_scaffolds"))
+stats_with_NA <- stats[CJ(unique(strain), unique(read_set), unique(k), unique(diploid_mode))]
 
-plot_data_bp <- melt(stats,id.vars = c("strain", "read_set", "k", "diploid_mode") , measure.vars = c("scaf_bp"))
+stats_with_NA[,k:=factor(k,levels=c("k_31", "k_71", "k_127")) ]
 
-plot_data_N50 <- melt(stats,id.vars = c("strain", "read_set", "k", "diploid_mode") , measure.vars = c( "scaf_N50"))
+plot_data_all <- melt(stats_with_NA,id.vars = c("strain", "read_set", "k", "diploid_mode") , measure.vars = c("n_scaffolds", "scaf_bp", "scaf_N50"))
 
-ggplot(plot_data, aes(x = diploid_mode, y = value, fill = read_set))+
+plot_data_n <- melt(stats_with_NA,id.vars = c("strain", "read_set", "k", "diploid_mode") , measure.vars = c("n_scaffolds"), fill = TRUE)
+
+plot_data_bp <- melt(stats_with_NA,id.vars = c("strain", "read_set", "k", "diploid_mode") , measure.vars = c("scaf_bp"))
+
+plot_data_N50 <- melt(stats_with_NA,id.vars = c("strain", "read_set", "k", "diploid_mode") , measure.vars = c( "scaf_N50"))
+
+plot_data_L50 <- melt(stats_with_NA,id.vars = c("strain", "read_set", "k", "diploid_mode") , measure.vars = c( "scaf_L50"))
+
+ggplot(plot_data_all, aes(x = diploid_mode, y = value, fill = read_set))+
   facet_grid(strain+variable ~ k, scales = "free_y")+
   geom_col(position = "dodge")
 
@@ -33,5 +37,9 @@ ggplot(plot_data_bp, aes(x = diploid_mode, y = value, fill = read_set))+
   geom_col(position = "dodge")
 
 ggplot(plot_data_N50, aes(x = diploid_mode, y = value, fill = read_set))+
+  facet_grid(strain+variable ~ k, scales = "free_y")+
+  geom_col(position = "dodge")
+
+ggplot(plot_data_L50, aes(x = diploid_mode, y = value, fill = read_set))+
   facet_grid(strain+variable ~ k, scales = "free_y")+
   geom_col(position = "dodge")

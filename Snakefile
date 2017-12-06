@@ -42,7 +42,7 @@ def parse_fasta_path(fasta_path):
 read_dir = 'data/reads'
 meraculous_config_file = 'src/meraculous_config.txt'
 read_set = ['norm', 'trim_decon']
-k = ['31', '71', '127']
+k = ['31', '63', '67', '71', '75', '79', '127']
 diploid_mode = ['0', '1']
 augustus_config_dir = resolve_path('bin/augustus/config')
 hymenoptera_odb = resolve_path('data/hymenoptera_odb9')

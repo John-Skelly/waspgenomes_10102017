@@ -201,7 +201,6 @@ rule meraculous:
         'output/meraculous/{strain}/{read_set}/meraculous.log'
     run:
         my_fastq = resolve_path(input.fastq)
-        my_dmin = '0'
         my_conf = meraculous_config_string.format(
             my_fastq, wildcards.k, wildcards.diploid_mode, my_dmin, threads)
         with open(output.config, 'wt') as f:
@@ -246,6 +245,7 @@ rule busco:
         shell('cd {params.wd} || exit 1 ; '
               'export AUGUSTUS_CONFIG_PATH={augustus_config_dir} ; '
               'run_BUSCO.py '
+
               '-i {my_fasta} '
               '-c {threads} '
               '-o busco '

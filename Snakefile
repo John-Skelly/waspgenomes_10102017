@@ -202,7 +202,7 @@ rule meraculous:
     run:
         my_fastq = resolve_path(input.fastq)
         my_conf = meraculous_config_string.format(
-            my_fastq, wildcards.k, wildcards.diploid_mode, my_dmin, threads)
+            my_fastq, wildcards.k, wildcards.diploid_mode, threads)
         with open(output.config, 'wt') as f:
             f.write(my_conf)
         shell(

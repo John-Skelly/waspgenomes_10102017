@@ -183,11 +183,30 @@ rule norm:
         'min=5 '
         'peaks={output.peaks} '
         '2> {log.norm} '
+
+#find dmin
+rule dmin_finder:
+    input:
+        mercount_file = ('output/meraculous/{strain}/{read_set}/k_{k}'
+                       '/diplo_{diploid_mode}/meraculous_mercount/mercount.hist')
+    output:
+        dmin = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt'),
+        dmin_plot = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+                   'diplo_{diploid_mode}/meraculous_mercount/dmin_plot.pdf')
+    log:
+        log = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+             'diplo_{diploid_mode}/meraculous_mercount/dmin_finder.log)
+    script:
+        'src/dmin_finder.R'  
+    
         
 # run meraculous
 rule meraculous:
     input:
-        fastq = 'output/{read_set}/Ma-{strain}.fastq.gz'
+        fastq = 'output/{read_set}/Ma-{strain}.fastq.gz',
+        dmin_file = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt')
     threads:
         50
     params:
@@ -201,6 +220,12 @@ rule meraculous:
         'output/meraculous/{strain}/{read_set}/meraculous.log'
     run:
         my_fastq = resolve_path(input.fastq)
+        if wildcards.strain == 'MA3':
+            with open(input.dmin_file) as x:
+                dmin = x.read()
+            x.closed
+        else:
+            dmin = '0'            
         my_conf = meraculous_config_string.format(
             my_fastq, wildcards.k, wildcards.diploid_mode, threads)
         with open(output.config, 'wt') as f:
@@ -224,6 +249,21 @@ rule assembly_stats:
               'minscaf=1000 '
               'format=3 '
               '>{output} ')
+
+#kmer coverage analysis
+rule plot_kmer_coverage:
+    input:
+        hist_before = 'output/norm/Ma-{strain}_hist.txt',
+        hist_after = 'output/norm/Ma-{strain}_hist_out.txt',
+        peaks = 'output/norm/Ma-{strain}_peaks.txt'
+    output:
+        plot = 'output/kmer_plot/Ma-{strain}_plot.pdf'
+    threads:
+        1
+    log:
+        log = 'output/kmer_plot/Ma-{strain}.log'
+    script:
+        'src/plot_kmer_coverage.R'
 
 #busco analysis
 rule busco_targets:

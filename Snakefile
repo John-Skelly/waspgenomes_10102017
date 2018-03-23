@@ -196,7 +196,7 @@ rule dmin_finder:
                    'diplo_{diploid_mode}/meraculous_mercount/dmin_plot.pdf')
     log:
         log = ('output/meraculous/{strain}/{read_set}/k_{k}/'
-             'diplo_{diploid_mode}/meraculous_mercount/dmin_finder.log)
+             'diplo_{diploid_mode}/meraculous_mercount/dmin_finder.log')
     script:
         'src/dmin_finder.R'  
     

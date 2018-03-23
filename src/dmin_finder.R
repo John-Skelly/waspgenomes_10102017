@@ -5,9 +5,13 @@ library("stringi")
 
 #input and output
 mercount_file <- snakemake@input[["mercount_file"]]
-dmin_plot <- snakemake@output[["dmin_plot"]]
+dmin_plot <- snakemake@output[["dmin_plot.pdf"]]
 dmin_out <- snakemake@output[["dmin_out"]]
 log_file <- snakemake@output[["log"]]
+
+#debug
+#mercount_file <- "output/meraculous/MA3/trim_decon/k_75/diplo_0/meraculous_mercount/mercount.hist"
+
 
 #set log
 log <- file(log_file, open = "wt")
@@ -35,7 +39,7 @@ dmin_plot <- ggplot(mercount_plot, aes(x = depth, y = kmers, colour = "red"))+
         geom_vline(xintercept= dmin, linetype= "dashed", color= "blue")
 
 #write output
-ggsave(filename = dmin_plot,
+ggsave(filename = "dmin_plot.pdf",
        plot = dmin_plot,
        device = cairo_pdf,
        width =10,

@@ -5,7 +5,7 @@ library("stringi")
 
 #input and output
 mercount_file <- snakemake@input[["mercount_file"]]
-dmin_plot <- snakemake@output[["dmin_plot.pdf"]]
+dmin_plot <- snakemake@output[["dmin_plot"]]
 dmin_out <- snakemake@output[["dmin_out"]]
 log_file <- snakemake@output[["log"]]
 

@@ -96,6 +96,11 @@ rule dmin_targets:
                   'diplo_{diploid_mode}/meraculous_mercount/dmin.txt'),
                strain=all_samples, read_set=read_set, k=k, diploid_mode=diploid_mode)
 
+rule kmer_coverage_targets:
+    input:
+        expand(('output/kmer_plot/Ma-{strain}_plot.pdf'),
+               strain=all_samples)
+
 
 
 #trim & decontaminate read files

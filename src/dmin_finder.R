@@ -32,19 +32,20 @@ mercount_plot <- rbind2(mercount_data, idcol = 'param')
 #returns dmin, constructs graph and indicates dmin
 TRUE_kmers<- (which(((diff(diff(mercount_plot$kmers) >0) !=0))))
 dmin <- TRUE_kmers[1]
-dmin_plot <- ggplot(mercount_plot, aes(x = depth, y = kmers, colour = "red"))+
+gp <- ggplot(mercount_plot, aes(x = depth, y = kmers, colour = "red"))+
         geom_path()+
         xlim(c(0, 200))+
         scale_y_log10()+
         geom_vline(xintercept= dmin, linetype= "dashed", color= "blue")
 
 #write output
-ggsave(filename = "dmin_plot.pdf",
-       plot = dmin_plot,
+ggsave(filename = dmin_plot,
+       plot = gp,
        device = cairo_pdf,
        width =10,
        height = 7.5,
        units = "in")
+write(dmin, dmin_out)
 
 # write session info
 sessionInfo()

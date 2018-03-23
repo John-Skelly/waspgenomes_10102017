@@ -197,7 +197,7 @@ rule dmin_finder:
         mercount_file = ('output/meraculous/{strain}/{read_set}/k_{k}'
                        '/diplo_{diploid_mode}/meraculous_mercount/mercount.hist')
     output:
-        dmin = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+        dmin_out = ('output/meraculous/{strain}/{read_set}/k_{k}/'
                   'diplo_{diploid_mode}/meraculous_mercount/dmin.txt'),
         dmin_plot = ('output/meraculous/{strain}/{read_set}/k_{k}/'
                    'diplo_{diploid_mode}/meraculous_mercount/dmin_plot.pdf')

@@ -7,7 +7,7 @@ library("stringi")
 mercount_file <- snakemake@input[["mercount_file"]]
 dmin_plot <- snakemake@output[["dmin_plot"]]
 dmin_out <- snakemake@output[["dmin_out"]]
-log_file <- snakemake@output[["log"]]
+log_file <- snakemake@log[["log"]]
 
 #debug
 #mercount_file <- "output/meraculous/MA3/trim_decon/k_75/diplo_0/meraculous_mercount/mercount.hist"

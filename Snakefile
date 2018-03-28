@@ -239,7 +239,7 @@ rule meraculous:
 #            my_dmin = '0'
         my_dmin = '0'            
         my_conf = meraculous_config_string.format(
-            my_fastq, wildcards.k, wildcards.diploid_mode, my_dmin, threads)
+            my_fastq, wildcards.k, wildcards.diploid_mode, threads)
         with open(output.config, 'wt') as f:
             f.write(my_conf)
         shell(

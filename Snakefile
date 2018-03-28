@@ -234,9 +234,9 @@ rule meraculous:
         my_fastq = resolve_path(input.fastq)
         if wildcards.strain == 'MA3':
             with open(input.dmin_file) as x:
-                dmin = x.read()
+                my_dmin = x.read()
         else:
-            dmin = '0'            
+            my_dmin = '0'            
         my_conf = meraculous_config_string.format(
             my_fastq, wildcards.k, wildcards.diploid_mode, my_dmin, threads)
         with open(output.config, 'wt') as f:

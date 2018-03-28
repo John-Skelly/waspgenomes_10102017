@@ -237,7 +237,6 @@ rule meraculous:
                 my_dmin = x.read()
         else:
             my_dmin = '0'
-        my_dmin = '0'            
         my_conf = meraculous_config_string.format(
             my_fastq, wildcards.k, wildcards.diploid_mode, my_dmin, threads)
         with open(output.config, 'wt') as f:
@@ -246,7 +245,7 @@ rule meraculous:
             'bin/meraculous/run_meraculous.sh '
             '-dir {params.outdir} '
             '-config {output.config} '
-            '&> {log}'
+            '&> {log}')
 
 #assembly stats
 rule assembly_stats:

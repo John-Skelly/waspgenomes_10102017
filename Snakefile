@@ -246,7 +246,7 @@ rule meraculous:
             'bin/meraculous/run_meraculous.sh '
             '-dir {params.outdir} '
             '-config {output.config} '
-            'echo {log}')
+            '&> {log}')
 
 #assembly stats
 rule assembly_stats:

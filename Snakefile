@@ -235,11 +235,10 @@ rule meraculous:
         if wildcards.strain == 'MA3':
             with open(input.dmin_file) as x:
                 dmin = x.read()
-            x.closed
         else:
             dmin = '0'            
         my_conf = meraculous_config_string.format(
-            my_fastq, wildcards.k, wildcards.diploid_mode, threads)
+            my_fastq, wildcards.k, my_dmin wildcards.diploid_mode, threads)
         with open(output.config, 'wt') as f:
             f.write(my_conf)
         shell(

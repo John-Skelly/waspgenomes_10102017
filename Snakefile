@@ -46,6 +46,9 @@ k = ['31', '63', '67', '71', '75', '79', '127']
 diploid_mode = ['0', '1']
 augustus_config_dir = resolve_path('bin/augustus/config')
 hymenoptera_odb = resolve_path('data/hymenoptera_odb9')
+max_threads = config["threads"]
+print(max_threads)
+raise valueError("Blaaaaaaa") 
 
 #########
 #Setup###
@@ -212,7 +215,33 @@ rule dmin_finder:
     script:
         'src/dmin_finder.R'  
     
-        
+#meraculous config
+rule meraculous_config:
+    input:
+        fastq = 'output/{read_set}/Ma-{strain}.fastq.gz',
+        dmin_file = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt')
+    threads:
+        50
+    params:
+        outdir = 'output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
+    output:
+        config = ('output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
+                'config.txt'),
+    run:
+        my_fastq = resolve_path(input.fastq)
+        if wildcards.strain == 'MA3':
+            with open(input.dmin_file) as x:
+                my_dmin = x.read()
+        else:
+            my_dmin = '0'
+        my_conf = meraculous_config_string.format(
+            my_fastq, wildcards.k, wildcards.diploid_mode, my_dmin, threads)
+        print(my_conf)
+        with open(output.config, 'wt') as f:
+            f.write(my_conf)
+
+
 # run meraculous
 rule meraculous:
     input:

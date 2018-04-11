@@ -46,9 +46,7 @@ k = ['31', '63', '67', '71', '75', '79', '127']
 diploid_mode = ['0', '1']
 augustus_config_dir = resolve_path('bin/augustus/config')
 hymenoptera_odb = resolve_path('data/hymenoptera_odb9')
-print(config)
-max_threads = config["cores"]
-print(max_threads)
+print(threads)
 raise valueError("Blaaaaaaa") 
 
 #########

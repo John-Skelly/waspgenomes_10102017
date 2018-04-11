@@ -46,9 +46,7 @@ k = ['31', '63', '67', '71', '75', '79', '127']
 diploid_mode = ['0', '1']
 augustus_config_dir = resolve_path('bin/augustus/config')
 hymenoptera_odb = resolve_path('data/hymenoptera_odb9')
-print(threads)
-raise valueError("Blaaaaaaa") 
-
+meraculous_threads = 50
 #########
 #Setup###
 #########
@@ -221,7 +219,7 @@ rule meraculous_config:
         dmin_file = ('output/meraculous/{strain}/{read_set}/k_{k}/'
                   'diplo_{diploid_mode}/meraculous_mercount/dmin.txt')
     threads:
-        50
+        1
     params:
         outdir = 'output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
     output:
@@ -235,8 +233,7 @@ rule meraculous_config:
         else:
             my_dmin = '0'
         my_conf = meraculous_config_string.format(
-            my_fastq, wildcards.k, wildcards.diploid_mode, my_dmin, threads)
-        print(my_conf)
+            my_fastq, wildcards.k, wildcards.diploid_mode, my_dmin, meraculous_threads)
         with open(output.config, 'wt') as f:
             f.write(my_conf)
 
@@ -245,36 +242,22 @@ rule meraculous_config:
 rule meraculous:
     input:
         fastq = 'output/{read_set}/Ma-{strain}.fastq.gz',
-        dmin_file = ('output/meraculous/{strain}/{read_set}/k_{k}/'
-                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt')
+        config = ('output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
+                'config.txt')
     threads:
-        50
+        meraculous_threads
     params:
         outdir = 'output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
     output:
-        config = ('output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
-                'config.txt'),
         contigs = ('output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
                 'meraculous_final_results/final.scaffolds.fa')
     log:
         'output/meraculous/{strain}/{read_set}/meraculous.log'
-    run:
-        my_fastq = resolve_path(input.fastq)
-        if wildcards.strain == 'MA3':
-            with open(input.dmin_file) as x:
-                my_dmin = x.read()
-        else:
-            my_dmin = '0'
-        my_conf = meraculous_config_string.format(
-            my_fastq, wildcards.k, wildcards.diploid_mode, my_dmin, threads)
-        print(my_conf)
-        with open(output.config, 'wt') as f:
-            f.write(my_conf)
-        shell(
-            'bin/meraculous/run_meraculous.sh '
-            '-dir {params.outdir} '
-            '-config {output.config} '
-            '&> {log}')
+    shell:
+        'bin/meraculous/run_meraculous.sh '
+        '-dir {params.outdir} '
+        '-config {input.config} '
+        '&> {log}'
 
 #assembly stats
 rule assembly_stats:

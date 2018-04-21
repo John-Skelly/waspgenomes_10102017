@@ -252,7 +252,7 @@ rule meraculous:
         contigs = ('output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
                 'meraculous_final_results/final.scaffolds.fa')
     log:
-        'output/meraculous/{strain}/{read_set}/meraculous.log'
+        'output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/meraculous.log'
     shell:
         'bin/meraculous/run_meraculous.sh '
         '-dir {params.outdir} '

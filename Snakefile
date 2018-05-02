@@ -221,7 +221,7 @@ rule meraculous_config:
     threads:
         1
     params:
-        outdir = 'output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}'
+        outdir = 'output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
     output:
         config = ('output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
                 'config.txt'),

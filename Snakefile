@@ -253,11 +253,11 @@ rule meraculous:
                 'meraculous_final_results/final.scaffolds.fa')
     log:
         'output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/meraculous.log'
-    shell:
+    shell(
         'bin/meraculous/run_meraculous.sh '
         '-dir {params.outdir} '
         '-config {input.config} '
-        '&> {log}'
+        '&> {log}')
 
 #assembly stats
 rule assembly_stats:

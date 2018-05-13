@@ -197,22 +197,6 @@ rule norm:
         'peaks={output.peaks} '
         '2> {log.norm} '
 
-#find dmin
-rule dmin_finder:
-    input:
-        mercount_file = ('output/meraculous/{strain}/{read_set}/k_{k}'
-                       '/diplo_{diploid_mode}/meraculous_mercount/mercount.hist')
-    output:
-        dmin_out = ('output/meraculous/{strain}/{read_set}/k_{k}/'
-                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt'),
-        dmin_plot = ('output/meraculous/{strain}/{read_set}/k_{k}/'
-                   'diplo_{diploid_mode}/meraculous_mercount/dmin_plot.pdf')
-    log:
-        log = ('output/meraculous/{strain}/{read_set}/k_{k}/'
-             'diplo_{diploid_mode}/meraculous_mercount/dmin_finder.log')
-    script:
-        'src/dmin_finder.R'  
-    
 #meraculous config
 rule meraculous_config:
     input:
@@ -261,6 +245,22 @@ rule meraculous:
             '-config {input.config} '
             '&> {log}')
 
+#find dmin
+rule dmin_finder:
+    input:
+        mercount_file = ('output/meraculous/{strain}/{read_set}/k_{k}'
+                       '/diplo_{diploid_mode}/meraculous_mercount/mercount.hist')
+    output:
+        dmin_out = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt'),
+        dmin_plot = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+                   'diplo_{diploid_mode}/meraculous_mercount/dmin_plot.pdf')
+    log:
+        log = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+             'diplo_{diploid_mode}/meraculous_mercount/dmin_finder.log')
+    script:
+        'src/dmin_finder.R'         
+        
 #assembly stats
 rule assembly_stats:
     input:

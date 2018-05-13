@@ -202,8 +202,8 @@ rule norm:
 rule meraculous_config:
     input:
         fastq = 'output/{read_set}/Ma-{strain}.fastq.gz',
-        dmin_file = ('output/meraculous/{strain}/{read_set}/k_{k}/'
-                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt')
+#        dmin_file = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+#                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt')
     threads:
         1
     params:

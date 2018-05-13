@@ -211,12 +211,13 @@ rule meraculous_config:
         config = ('output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
                 'config.txt'),
     run:
-        my_fastq = resolve_path(input.fastq)
-        if wildcards.strain == 'MA3':
-            with open(input.dmin_file) as x:
-                my_dmin = x.read()
-        else:
-            my_dmin = '0'
+#        my_fastq = resolve_path(input.fastq)
+#        if wildcards.strain == 'MA3':
+#            with open(input.dmin_file) as x:
+#                my_dmin = x.read()
+#        else:
+#            my_dmin = '0'
+        my_dmin = '0'
         my_conf = meraculous_config_string.format(
             my_fastq, wildcards.k, wildcards.diploid_mode, my_dmin, meraculous_threads)
         with open(output.config, 'wt') as f:

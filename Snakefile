@@ -202,8 +202,8 @@ rule norm:
 rule meraculous_config:
     input:
         fastq = 'output/{read_set}/Ma-{strain}.fastq.gz',
-#        dmin_file = ('output/meraculous/{strain}/{read_set}/k_{k}/'
-#                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt')
+        dmin_file = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt')
     threads:
         1
     params:
@@ -213,12 +213,12 @@ rule meraculous_config:
                 'config.txt'),
     run:
         my_fastq = resolve_path(input.fastq)
-#        if wildcards.strain == 'MA3':
-#            with open(input.dmin_file) as x:
-#                my_dmin = x.read()
-#        else:
-#            my_dmin = '0'
-        my_dmin = '0'
+        if wildcards.strain == 'MA3':
+            with open(input.dmin_file) as x:
+                my_dmin = x.read()
+        else:
+            my_dmin = '0'
+#        my_dmin = '0'
         my_conf = meraculous_config_string.format(
             my_fastq, wildcards.k, wildcards.diploid_mode, my_dmin, meraculous_threads)
         with open(output.config, 'wt') as f:
@@ -248,20 +248,20 @@ rule meraculous:
             '&> {log}')
 
 #find dmin
-#rule dmin_finder:
-#    input:
-#        mercount_file = ('output/meraculous/{strain}/{read_set}/k_{k}'
-#                       '/diplo_{diploid_mode}/meraculous_mercount/mercount.hist')
-#    output:
-#        dmin_out = ('output/meraculous/{strain}/{read_set}/k_{k}/'
-#                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt'),
-#        dmin_plot = ('output/meraculous/{strain}/{read_set}/k_{k}/'
-#                   'diplo_{diploid_mode}/meraculous_mercount/dmin_plot.pdf')
-#    log:
-#        log = ('output/meraculous/{strain}/{read_set}/k_{k}/'
-#             'diplo_{diploid_mode}/meraculous_mercount/dmin_finder.log')
-#    script:
-#        'src/dmin_finder.R'         
+rule dmin_finder:
+    input:
+        mercount_file = ('output/meraculous/{strain}/{read_set}/k_{k}'
+                       '/diplo_{diploid_mode}/meraculous_mercount/mercount.hist')
+    output:
+        dmin_out = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt'),
+        dmin_plot = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+                   'diplo_{diploid_mode}/meraculous_mercount/dmin_plot.pdf')
+    log:
+        log = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+             'diplo_{diploid_mode}/meraculous_mercount/dmin_finder.log')
+    script:
+        'src/dmin_finder.R'         
         
 #assembly stats
 rule assembly_stats:

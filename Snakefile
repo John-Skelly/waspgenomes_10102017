@@ -34,7 +34,20 @@ def parse_fasta_path(fasta_path):
             'read_set': path_elements[1],
             'k': path_elements[2],
             'diploid_mode': path_elements[3]}
-    
+
+def dmin_writer(wildcards):
+    if wildcards.strain == 'MA3':
+        if os.path.exists(('output/meraculous/{strain}/{read_set}/k_{k}/'
+                           'diplo_{diploid_mode}/meraculous_mercount/dmin.txt')):
+            with open(('output/meraculous/{strain}/{read_set}/k_{k}/'
+                       'diplo_{diploid_mode}/meraculous_mercount/dmin.txt')) as f:
+                my_dmin = f.read()
+        else:
+            my_dmin = '0'
+                
+    else:
+        my_dmin = '0'
+        
 #########
 #GLOBALS#
 #########
@@ -202,8 +215,8 @@ rule norm:
 rule meraculous_config:
     input:
         fastq = 'output/{read_set}/Ma-{strain}.fastq.gz',
-        dmin_file = ('output/meraculous/{strain}/{read_set}/k_{k}/'
-                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt')
+#        dmin_file = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+#                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt')
     threads:
         1
     params:
@@ -213,15 +226,16 @@ rule meraculous_config:
                 'config.txt'),
     run:
         my_fastq = resolve_path(input.fastq)
-        if wildcards.strain == 'MA3':
-            if os.path.exists(input.dmin_file):
-                with open(input.dmin_file) as x:
-                    my_dmin = x.read()
-            else:
-                my_dmin = '0'
-                
-        else:
-            my_dmin = '0'
+        my_dmin = dmin_checker
+#        if wildcards.strain == 'MA3':
+#            if os.path.exists(input.dmin_file):
+#                with open(input.dmin_file) as x:
+#                    my_dmin = x.read()
+#            else:
+#                my_dmin = '0'
+#                
+#        else:
+#            my_dmin = '0'
 #        my_dmin = '0'
         my_conf = meraculous_config_string.format(
             my_fastq, wildcards.k, wildcards.diploid_mode, my_dmin, meraculous_threads)

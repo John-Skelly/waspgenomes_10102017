@@ -92,11 +92,11 @@ rule all:
                 'meraculous_final_results/final.scaffolds.fa'),
                strain=all_samples, read_set=read_set, k=k, diploid_mode=diploid_mode)
 
-#rule dmin_targets:
-#    input:
-#        expand(('output/meraculous/{strain}/{read_set}/k_{k}/'
-#                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt'),
-#               strain=all_samples, read_set=read_set, k=k, diploid_mode=diploid_mode)
+rule dmin_targets:
+    input:
+        expand(('output/meraculous/{strain}/{read_set}/k_{k}/'
+                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt'),
+               strain=all_samples, read_set=read_set, k=k, diploid_mode=diploid_mode)
 
 rule kmer_coverage_targets:
     input:
@@ -214,8 +214,12 @@ rule meraculous_config:
     run:
         my_fastq = resolve_path(input.fastq)
         if wildcards.strain == 'MA3':
-            with open(input.dmin_file) as x:
+            if input.dmin_file.is_file():
+                with open(input.dmin_file) as x:
                 my_dmin = x.read()
+            else:
+                my_dmin = '0'
+                
         else:
             my_dmin = '0'
 #        my_dmin = '0'

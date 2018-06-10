@@ -226,7 +226,7 @@ rule meraculous_config:
                 'config.txt'),
     run:
         my_fastq = resolve_path(input.fastq)
-        my_dmin = dmin_checker(input.fastq)
+        my_dmin = dmin_writer(input.fastq)
 #        if wildcards.strain == 'MA3':
 #            if os.path.exists(input.dmin_file):
 #                with open(input.dmin_file) as x:

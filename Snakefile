@@ -216,7 +216,7 @@ rule meraculous_config:
         if wildcards.strain == 'MA3':
             if input.dmin_file.is_file():
                 with open(input.dmin_file) as x:
-                my_dmin = x.read()
+                    my_dmin = x.read()
             else:
                 my_dmin = '0'
                 

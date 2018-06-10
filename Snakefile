@@ -214,7 +214,7 @@ rule meraculous_config:
     run:
         my_fastq = resolve_path(input.fastq)
         if wildcards.strain == 'MA3':
-            if input.dmin_file.is_file():
+            if Path(input.dmin_file).is_file():
                 with open(input.dmin_file) as x:
                     my_dmin = x.read()
             else:

@@ -35,12 +35,10 @@ def parse_fasta_path(fasta_path):
             'k': path_elements[2],
             'diploid_mode': path_elements[3]}
 
-def dmin_writer(wildcards):
+def dmin_writer(directory_name):
     if wildcards.strain == 'MA3':
-        if os.path.exists(('output/meraculous/{strain}/{read_set}/k_{k}/'
-                           'diplo_{diploid_mode}/meraculous_mercount/dmin.txt')):
-            with open(('output/meraculous/{strain}/{read_set}/k_{k}/'
-                       'diplo_{diploid_mode}/meraculous_mercount/dmin.txt')) as f:
+        if os.path.exists(directory_name + '/meraculous_mercount/dmin.txt'):
+            with open(directory_name + '/meraculous_mercount/dmin.txt') as f:
                 my_dmin = f.read()
         else:
             my_dmin = '0'
@@ -215,6 +213,8 @@ rule norm:
 rule meraculous_config:
     input:
         fastq = 'output/{read_set}/Ma-{strain}.fastq.gz',
+        in_dir = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+                   'diplo_{diploid_mode}/')
 #        dmin_file = ('output/meraculous/{strain}/{read_set}/k_{k}/'
 #                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt')
     threads:
@@ -226,7 +226,7 @@ rule meraculous_config:
                 'config.txt'),
     run:
         my_fastq = resolve_path(input.fastq)
-        my_dmin = dmin_writer(input.fastq)
+        my_dmin = dmin_writer(input.in_dir)
 #        if wildcards.strain == 'MA3':
 #            if os.path.exists(input.dmin_file):
 #                with open(input.dmin_file) as x:

@@ -227,17 +227,7 @@ rule meraculous_config:
                 'config.txt'),
     run:
         my_fastq = resolve_path(input.fastq)
-        my_dmin = dmin_writer()
-#        if wildcards.strain == 'MA3':
-#            if os.path.exists(input.dmin_file):
-#                with open(input.dmin_file) as x:
-#                    my_dmin = x.read()
-#            else:
-#                my_dmin = '0'
-#                
-#        else:
-#            my_dmin = '0'
-#        my_dmin = '0'
+        my_dmin = '0'
         my_conf = meraculous_config_string.format(
             my_fastq, wildcards.k, wildcards.diploid_mode, my_dmin, meraculous_threads)
         with open(output.config, 'wt') as f:

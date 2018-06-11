@@ -36,16 +36,18 @@ def parse_fasta_path(fasta_path):
             'diploid_mode': path_elements[3]}
 
 def dmin_writer(directory_name):
-    cat = parse_fasta_path(directory_name)
-    if cat == 'MA3':
-        if os.path.exists(directory_name + '/meraculous_mercount/dmin.txt'):
-            with open(directory_name + '/meraculous_mercount/dmin.txt') as f:
-                my_dmin = f.read()
-        else:
-            my_dmin = '0'
-                
-    else:
-        my_dmin = '0'
+    return '0'
+
+#    cat = parse_fasta_path(directory_name)
+#    if cat == 'MA3':
+#        if os.path.exists(directory_name + '/meraculous_mercount/dmin.txt'):
+#            with open(directory_name + '/meraculous_mercount/dmin.txt') as f:
+#                my_dmin = f.read()
+#        else:
+#            my_dmin = '0'
+#                
+#    else:
+#        my_dmin = '0'
         
 #########
 #GLOBALS#
@@ -225,7 +227,7 @@ rule meraculous_config:
                 'config.txt'),
     run:
         my_fastq = resolve_path(input.fastq)
-        my_dmin = dmin_writer(params.outdir)
+        my_dmin = dmin_writer()
 #        if wildcards.strain == 'MA3':
 #            if os.path.exists(input.dmin_file):
 #                with open(input.dmin_file) as x:

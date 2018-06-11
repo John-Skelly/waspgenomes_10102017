@@ -36,6 +36,7 @@ def parse_fasta_path(fasta_path):
             'diploid_mode': path_elements[3]}
 
 def dmin_writer(directory_name):
+    parse_fasta_path(direcotry_name)
     if wildcards.strain == 'MA3':
         if os.path.exists(directory_name + '/meraculous_mercount/dmin.txt'):
             with open(directory_name + '/meraculous_mercount/dmin.txt') as f:

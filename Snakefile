@@ -35,6 +35,19 @@ def parse_fasta_path(fasta_path):
             'k': path_elements[2],
             'diploid_mode': path_elements[3]}
 
+def dmin_writer(directory):
+    stripped_path = re.sub('^.*output/meraculous/(?P<id>.*)/.*$', '\g<id>', directory)
+    path_elements = stripped_path.split('/')
+    if path_elements[0] == 'MA3':
+        dmin_filepath = 'output/meraculous/' + stripped_path + '/meraculous_mercount/dmin.txt'
+        if os.path.exists(dmin_filepath):
+            with open(dmin_filepath) as f:
+                return f.read()
+        else:
+            return '0'                
+    else:
+        return '0'
+
 #########
 #GLOBALS#
 #########
@@ -233,6 +246,23 @@ rule meraculous:
             '-dir {params.outdir} '
             '-config {input.config} '
             '&> {log}')
+
+#find dmin
+rule dmin_finder:
+    input:
+        mercount_file = ('output/meraculous/{strain}/{read_set}/k_{k}'
+                       '/diplo_{diploid_mode}/meraculous_mercount/mercount.hist')
+    output:
+        dmin_out = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+                  'diplo_{diploid_mode}/meraculous_mercount/dmin.txt'),
+        dmin_plot = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+                   'diplo_{diploid_mode}/meraculous_mercount/dmin_plot.pdf')
+    log:
+        log = ('output/meraculous/{strain}/{read_set}/k_{k}/'
+             'diplo_{diploid_mode}/meraculous_mercount/dmin_finder.log')
+    script:
+        'src/dmin_finder.R'
+
 #assembly stats
 rule assembly_stats:
     input:

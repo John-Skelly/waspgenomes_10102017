@@ -116,7 +116,12 @@ rule kmer_coverage_targets:
     input:
         expand(('output/kmer_plot/Ma-{strain}_plot.pdf'),
                strain=all_samples)
-
+                
+rule meraculous_config_targets:
+    input:
+        expand(('output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
+                'config.txt'),
+               strain=all_samples, read_set=read_set, k=k, diploid_mode=diploid_mode)
 
 
 #trim & decontaminate read files

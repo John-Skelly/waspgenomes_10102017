@@ -108,7 +108,7 @@ rule all:
 rule dmin_finder_targets:
     input:
         expand(('output/meraculous/{strain}/{read_set}/k_{k}/diplo_{diploid_mode}/'
-                'meraculous_mercount/mercount.hist'),
+                'meraculous_mercount/dmin.txt'),
                strain=all_samples, read_set=read_set, k=k, diploid_mode=diploid_mode)
 
 rule kmer_coverage_targets:

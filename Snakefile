@@ -61,6 +61,7 @@ diploid_mode = ['0', '1']
 augustus_config_dir = resolve_path('bin/augustus/config')
 hymenoptera_odb = resolve_path('data/hymenoptera_odb9')
 meraculous_threads = 50
+r_container = 'shub://TomHarrop/singularity-containers:r_3.5.0'
 #########
 #Setup###
 #########
@@ -266,6 +267,8 @@ rule dmin_finder:
     log:
         log = ('output/meraculous/{strain}/{read_set}/k_{k}/'
              'diplo_{diploid_mode}/meraculous_mercount/dmin_finder.log')
+    singularity:
+        r_container
     script:
         'src/dmin_finder.R'
 

@@ -327,7 +327,9 @@ rule busco:
     run:
         my_fasta = resolve_path(input.fasta)
         shell('cd {params.wd} || exit 1 ; '
-              'export AUGUSTUS_CONFIG_PATH={augustus_config_dir} ; '
+              'pwd ;'
+              'echo export AUGUSTUS_CONFIG_PATH={augustus_config_dir} ;'
+              'export AUGUSTUS_CONFIG_PATH={augustus_config_dir} ;'
               'run_BUSCO.py '
               #'shub://TomHarrop/singularity-containers:busco_3.0.2'
 

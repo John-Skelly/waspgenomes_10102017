@@ -325,7 +325,7 @@ rule busco:
     singularity:
         busco_container
     run:
-        'busco_container'
+        shell('busco_container')
         #my_fasta = resolve_path(input.fasta)
         #print(my_fasta)
         #shell('cd {params.wd} || exit 1 ; '

@@ -331,8 +331,8 @@ rule busco:
               #'pwd ;'
               #'echo export AUGUSTUS_CONFIG_PATH={augustus_config_dir} ;'
               #'export AUGUSTUS_CONFIG_PATH={augustus_config_dir} ;'
-              #'run_BUSCO.py '
-              './singularity-containers:busco_3.0.2'
+              'run_BUSCO.py '
+              #'./singularity-containers:busco_3.0.2'
 
               '-i {my_fasta} '
               '-c {threads} '

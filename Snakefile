@@ -329,7 +329,7 @@ rule busco:
               '-c {threads} '
               '-o busco '
               '-m geno '
-              '-l {hymenoptera_odb} '
+              #'-l {hymenoptera_odb} '
               '-s nasonia '
               '-f '                                                             #force
               '&> busco.log')

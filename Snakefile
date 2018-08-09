@@ -325,9 +325,9 @@ rule busco:
     run:
         my_fasta = resolve_path(input.fasta)
         shell('./TomHarrop-singularity-containers-master-busco_3.0.2.simg '
-              #'-i {my_fasta} '
+              '-i {my_fasta} '
               '-c {threads} '
-              '-o busco '
+              #'-o busco '
               '-m geno '
               '-l {hymenoptera_odb} '
               '-s nasonia '

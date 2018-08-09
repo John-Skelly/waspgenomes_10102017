@@ -325,7 +325,7 @@ rule busco:
     singularity:
         busco_container
     run:
-        './singularity-containers:busco_3.0.2'
+        'busco_container'
         '-i {my_fasta} '
         '-c {threads} '
         '-o busco '

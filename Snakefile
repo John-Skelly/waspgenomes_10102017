@@ -326,11 +326,10 @@ rule busco:
         busco_container
     run:
         my_fasta = resolve_path(input.fasta)
-        shell('cd {params.wd} || exit 1 ; '
-              'run_BUSCO.py '
-              '-i {my_fasta} '
+        shell('./TomHarrop-singularity-containers-master-busco_3.0.2.simg '
+              '--in {my_fasta} '
               '-c {threads} '
-              '-o busco '
+              '--out busco '
               '-m geno '
               '-l {hymenoptera_odb} '
               '-s nasonia '

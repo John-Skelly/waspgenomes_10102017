@@ -329,7 +329,7 @@ rule busco:
         shell('cd {params.wd} || exit 1 ; '
               'export AUGUSTUS_CONFIG_PATH={augustus_config_dir} ; '
               'run_BUSCO.py '
-              'shub://TomHarrop/singularity-containers:busco_3.0.2'
+              #'shub://TomHarrop/singularity-containers:busco_3.0.2'
 
               '-i {my_fasta} '
               '-c {threads} '

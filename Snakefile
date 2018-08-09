@@ -326,6 +326,7 @@ rule busco:
         busco_container
     run:
         my_fasta = resolve_path(input.fasta)
+        print(my_fasta)
         shell('cd {params.wd} || exit 1 ; '
               'pwd ;'
               'echo export AUGUSTUS_CONFIG_PATH={augustus_config_dir} ;'

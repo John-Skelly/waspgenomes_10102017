@@ -325,23 +325,24 @@ rule busco:
     singularity:
         busco_container
     run:
-        my_fasta = resolve_path(input.fasta)
-        print(my_fasta)
-        shell('cd {params.wd} || exit 1 ; '
+        "./singularity-containers:busco_3.0.2"
+        #my_fasta = resolve_path(input.fasta)
+        #print(my_fasta)
+        #shell('cd {params.wd} || exit 1 ; '
               #'pwd ;'
               #'echo export AUGUSTUS_CONFIG_PATH={augustus_config_dir} ;'
               #'export AUGUSTUS_CONFIG_PATH={augustus_config_dir} ;'
-              'run_BUSCO.py '
+              #'run_BUSCO.py '
               #'./singularity-containers:busco_3.0.2'
 
-              '-i {my_fasta} '
-              '-c {threads} '
-              '-o busco '
-              '-m geno '
-              '-l {hymenoptera_odb} '
-              '-s nasonia '
-              '-f '                                                             #force
-              '&> busco.log')
+              #'-i {my_fasta} '
+              #'-c {threads} '
+              #'-o busco '
+              #'-m geno '
+              #'-l {hymenoptera_odb} '
+              #'-s nasonia '
+              #'-f '                                                             #force
+              #'&> busco.log')
 
 #Combine busco results
 rule combine_busco_results:

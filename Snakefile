@@ -62,6 +62,7 @@ augustus_config_dir = resolve_path('bin/augustus/config')
 hymenoptera_odb = resolve_path('data/hymenoptera_odb9')
 meraculous_threads = 50
 r_container = 'shub://TomHarrop/singularity-containers:r_3.5.0'
+busco_container = 'shub://TomHarrop/singularity-containers:busco_3.0.2'
 #########
 #Setup###
 #########
@@ -321,12 +322,14 @@ rule busco:
     params:
         wd = 'output/busco/{strain}/{read_set}/{k}/{diploid_mode}/'
     threads: 10
+    singularity:
+        busco_container
     run:
         my_fasta = resolve_path(input.fasta)
         shell('cd {params.wd} || exit 1 ; '
               'export AUGUSTUS_CONFIG_PATH={augustus_config_dir} ; '
-              #'run_BUSCO.py '
-              './TomHarrop-singularity-containers-master-busco_3.0.2.simg'
+              'run_BUSCO.py '
+              'shub://TomHarrop/singularity-containers:busco_3.0.2'
 
               '-i {my_fasta} '
               '-c {threads} '

@@ -326,6 +326,14 @@ rule busco:
         busco_container
     run:
         "./singularity-containers:busco_3.0.2"
+        '-i {my_fasta} '
+        '-c {threads} '
+        '-o busco '
+        '-m geno '
+        '-l {hymenoptera_odb} '
+        '-s nasonia '
+        '-f '                                                             #force
+        '&> busco.log')
         #my_fasta = resolve_path(input.fasta)
         #print(my_fasta)
         #shell('cd {params.wd} || exit 1 ; '

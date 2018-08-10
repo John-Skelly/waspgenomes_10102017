@@ -324,7 +324,8 @@ rule busco:
     threads: 10
     run:
         my_fasta = resolve_path(input.fasta)
-        shell('cd {params.wd} || exit 1 ; '
+        shell(
+              #'cd {params.wd} || exit 1 ; '
               './TomHarrop-singularity-containers-master-busco_3.0.2.simg '
               'run_BUSCO.py '
               '-i {my_fasta} '

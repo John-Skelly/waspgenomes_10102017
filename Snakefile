@@ -328,7 +328,7 @@ rule busco:
         my_fasta = resolve_path(input.fasta)
         shell(
               #'cd {params.wd} || exit 1 ; '
-              'run_BUSCO.py '
+              #'run_BUSCO.py '
               '--in {my_fasta} '
               '-c {threads} '
               '-o {output.tsv} '

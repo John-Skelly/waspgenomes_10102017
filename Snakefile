@@ -320,23 +320,22 @@ rule busco:
                '{strain}/{read_set}/{k}/{diploid_mode}/'
                'run_busco/full_table_busco.tsv')
     params:
-        wd = 'output/busco/{strain}/{read_set}/{k}/{diploid_mode}/'
+        wd = 'output/busco/{strain}/{read_set}/{k}/{diploid_mode}/',
+        my_fasta = resolve_path(input.fasta)
     threads: 10
     singularity:
         busco_container
-    run:
-        my_fasta = resolve_path(input.fasta)
-        shell(
-              #'cd {params.wd} || exit 1 ; '
-              'busco '
-              '-i {my_fasta} '
-              '-c {threads} '
-              '-o {output.tsv} '
-              '-m geno '
-              '-l {hymenoptera_odb} '
-              '-s nasonia '
-              '-f '                                                             #force
-              '&> busco.log')
+    shell:
+          'cd {params.wd} || exit 1 ; '
+          'run_BUSCO.py  '
+          '-i {params.my_fasta} '
+          '-c {threads} '
+          '-o {output.tsv} '
+          '-m geno '
+          '-l {hymenoptera_odb} '
+          '-s nasonia '
+          '-f '                                                             #force
+          '&> busco.log'
 
 #Combine busco results
 rule combine_busco_results:

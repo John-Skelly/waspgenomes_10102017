@@ -315,17 +315,17 @@ rule busco:
     input:
         fasta = ('output/meraculous/{strain}/{read_set}/{k}/{diploid_mode}/'
                  'meraculous_final_results/final.scaffolds.fa')
-    #output:
-    #    tsv = ('output/busco/'
-    #           '{strain}/{read_set}/{k}/{diploid_mode}/'
-    #           'run_busco/full_table_busco.tsv')
+    output:
+        tsv = ('output/busco/'
+               '{strain}/{read_set}/{k}/{diploid_mode}/'
+               'run_busco/full_table_busco.tsv')
     params:
         wd = 'output/busco/{strain}/{read_set}/{k}/{diploid_mode}/'
     threads: 10
     run:
         my_fasta = resolve_path(input.fasta)
         shell(
-              #'cd {params.wd} || exit 1 ; '
+              'cd {params.wd} || exit 1 ; '
               './TomHarrop-singularity-containers-master-busco_3.0.2.simg '
               #'run_BUSCO.py '
               '-i {my_fasta} '

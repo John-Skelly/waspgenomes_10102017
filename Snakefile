@@ -315,12 +315,12 @@ rule busco:
     input:
         fasta = ('output/meraculous/{strain}/{read_set}/{k}/{diploid_mode}/'
                  'meraculous_final_results/final.scaffolds.fa')
-    output:
-        tsv = ('output/busco/'
+    #output:
+    #    tsv = ('output/busco/'
                '{strain}/{read_set}/{k}/{diploid_mode}/'
                'run_busco/full_table_busco.tsv')
-    #params:
-    #    wd = 'output/busco/{strain}/{read_set}/{k}/{diploid_mode}/'
+    params:
+        wd = 'output/busco/{strain}/{read_set}/{k}/{diploid_mode}/'
     threads: 10
     run:
         my_fasta = resolve_path(input.fasta)

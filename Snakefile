@@ -321,7 +321,7 @@ rule busco:
                'run_busco/full_table_busco.tsv')
     params:
         wd = 'output/busco/{strain}/{read_set}/{k}/{diploid_mode}/',
-        my_fasta = resolve_path(input.fasta)
+        my_fasta = lambda wildcards, input: resolve_path(input.fasta)
     threads: 10
     singularity:
         busco_container

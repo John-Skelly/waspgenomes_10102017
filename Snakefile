@@ -329,7 +329,7 @@ rule busco:
         shell(
               #'cd {params.wd} || exit 1 ; '
               #'run_BUSCO.py '
-              '-i {my_fasta} '
+              '--in {my_fasta} '
               '-c {threads} '
               '-o busco '
               '-m geno '

@@ -317,8 +317,8 @@ rule busco:
                  'meraculous_final_results/final.scaffolds.fa')
     #output:
     #    tsv = ('output/busco/'
-               '{strain}/{read_set}/{k}/{diploid_mode}/'
-               'run_busco/full_table_busco.tsv')
+    #           '{strain}/{read_set}/{k}/{diploid_mode}/'
+    #           'run_busco/full_table_busco.tsv')
     params:
         wd = 'output/busco/{strain}/{read_set}/{k}/{diploid_mode}/'
     threads: 10

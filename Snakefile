@@ -331,7 +331,7 @@ rule busco:
               'run_BUSCO.py '
               '--in {my_fasta} '
               '-c {threads} '
-              '-o busco '
+              '-o {output.tsv} '
               '-m geno '
               '-l {hymenoptera_odb} '
               '-s nasonia '

@@ -17,6 +17,8 @@ output_rds <- snakemake@output[["rds"]]
 
 output_plot <- snakemake@output[["plot"]]
 
+output_png <- snakemake@output[["png"]]
+
 busco_result_files <- snakemake@input[["busco_targets"]]
 
 names(busco_result_files) <- gsub(".*/busco/(.+)/run_busco/.*", "\\1", busco_result_files)

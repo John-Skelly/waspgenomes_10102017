@@ -45,7 +45,7 @@ busco_stats[,k:=factor(k,levels=c("k_63", "k_67", "k_71", "k_75", "k_79")) ]
 #plot
 
 gp <- ggplot(busco_stats,aes(x=k, y=percent_complete, fill=Status, label = round(percent_complete, digits=2)))+
-  geom_col(position = "dodge", width = 2)+
+  geom_col(position = "dodge", width = 1.2)+
   facet_grid(read_set+diploid_mode~strain)+
   geom_text(size = 1, check_overlap = TRUE, position = position_dodge(0.9), vjust = -1, fontface = "bold"
                 )

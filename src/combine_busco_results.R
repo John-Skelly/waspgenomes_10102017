@@ -47,6 +47,8 @@ busco_stats[,k:=factor(k,levels=c("k_63", "k_67", "k_71", "k_75", "k_79")) ]
 gp <- ggplot(busco_stats,aes(x=k, y=percent_complete, fill=Status))+
   geom_col(position = "dodge")+
   facet_grid(read_set+diploid_mode~strain)
+  geom_text(size = 2.5, check_overlap = TRUE, position = position_dodge(0.9), vjust = "middle", fontface = "bold"
+                )
 
 saveRDS(busco_stats, file = output_rds)
 

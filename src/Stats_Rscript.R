@@ -31,20 +31,28 @@ ggplot(plot_data_all, aes(x = diploid_mode, y = value, fill = read_set, label=va
             )
   
 
-ggplot(plot_data_n, aes(x = diploid_mode, y = value, fill = read_set))+
+ggplot(plot_data_n, aes(x = diploid_mode, y = value, fill = read_set, label=value))+
   facet_grid(strain+variable ~ k, scales = "free_y")+
-  geom_col(position = "dodge")
+  geom_col(position = "dodge")+
+  geom_text(size = 3, check_overlap = TRUE, position = position_stack(0.1)
+            )
   
 
-ggplot(plot_data_bp, aes(x = diploid_mode, y = value, fill = read_set))+
+ggplot(plot_data_bp, aes(x = diploid_mode, y = value, fill = read_set, label=scaf_bp, label=value))+
   facet_grid(strain+variable ~ k, scales = "free_y")+
-  geom_col(position = "dodge")
+  geom_col(position = "dodge")+
+  geom_text(size = 3, check_overlap = TRUE, position = position_stack(0.5)
+          )
 
-ggplot(plot_data_N50, aes(x = diploid_mode, y = value, fill = read_set))+
+ggplot(plot_data_N50, aes(x = diploid_mode, y = value, fill = read_set, label=scaf_N50, label=value))+
   facet_grid(strain+variable ~ k, scales = "free_y")+
-  geom_col(position = "dodge")
+  geom_col(position = "dodge")+
+  geom_text(size = 3, check_overlap = TRUE, position = position_stack(0.5)
+          )
 
-ggplot(plot_data_L50, aes(x = diploid_mode, y = value, fill = read_set))+
+ggplot(plot_data_L50, aes(x = diploid_mode, y = value, fill = read_set, label=scaf_L50, label=value))+
   facet_grid(strain+variable ~ k, scales = "free_y")+
-  geom_col(position = "dodge")
+  geom_col(position = "dodge")+
+  geom_text(size = 3, check_overlap = TRUE, position = position_stack(0.1)
+          )
 

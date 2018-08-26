@@ -38,7 +38,7 @@ busco_stats[,c("strain", "read_set", "k", "diploid_mode"):= tstrsplit(assembly, 
 
 #reorder table
 
-busco_stats[,k:=factor(k,levels=c("k_31", "k_71", "k_127")) ]
+busco_stats[,k:=factor(k,levels=c("k_63", "k_67", "k_71", "k_75", "k_79")) ]
 
 #plot
 

@@ -48,6 +48,5 @@ gp <- ggplot(busco_stats,aes(x=k, y=percent_complete, fill=Status))+
 
 saveRDS(busco_stats, file = output_rds)
 
-ggsave(filename = output.png, plot = gp, device = png())
-#ggsave(filename = output_plot, plot = gp, width = 10, height = 7.5, units = 'in')
+ggsave(filename = output_plot, plot = gp, width = 10, height = 7.5, units = 'in')
 

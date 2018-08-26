@@ -342,7 +342,7 @@ rule combine_busco_results:
     input: busco_targets = busco_targets
     output: 
         rds = 'output/busco/full_table_combine.Rds',
-        plot = 'output/busco/stats_plot.pdf',
-        png = 'output/busco/stats_plot.png'
+        plot = 'output/busco/stats_plot.pdf'#,
+        #png = 'output/busco/stats_plot.png'
     script:
         'src/combine_busco_results.R'
